@@ -15,6 +15,10 @@
               <img class="img-thumbnail img-fluid" style="width:auto; max-height: 300px;" src= {{ "../../" + content['content'] }}/>
             </label>
           </div>
+
+          {% if content['count'] is defined %}
+            <div style="color:blue;"><strong> Count: {{ content['count'] }}</strong></div>
+          {% endif %}
         {% endfor %}
       </p>
     {% endif %}

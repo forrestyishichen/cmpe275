@@ -12,7 +12,7 @@ import sys
 from time import strftime, localtime
 import datetime
 
-TEST_LOG = __name__ + ' juanchen: '
+TEST_LOG = __name__ + '.py'
 
 this_function_name = sys._getframe().f_code.co_name
 
@@ -51,11 +51,8 @@ def home_page():
 def main_page():
     userid = api.get_user_id(current_user.username)
     if userid:
-        print(this_function_name)
-        print('shit: '+userid)
         surveys = api.get_all_general_surveys()
-        if surveys:
-            return render_template('all_public_surveys.html', title="HOME", surveys=surveys, isSignedIn=True, userid=userid)
+        return render_template('all_public_surveys.html', title="HOME", surveys=surveys, isSignedIn=True, userid=userid)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -82,7 +79,7 @@ def register():
     print(this_function_name)
     if request.method == 'GET':
         return render_template('register.html', title='Register Your Account')
-    print('Log In')
+
     req_json = util.request_form_to_json(request)
 
     if req_json['action'] == 'getcode' and req_json['username'] != "":
@@ -93,11 +90,16 @@ def register():
     elif req_json['action'] == 'register':
         if req_json['code'] != "" and req_json['password'] != "" and req_json['username'] != "":
             res = api.register_user(req_json)
-            if res:
+            if not res:
                 return render_template('register.html', title="Get Code", warning='Entered Wrong Code')
-
-    warning = "Click Get Code first, Enter code from your email"
-    return render_template('register.html', title="Get Code", warning=warning)
+            else:
+                return redirect(url_for('login'))
+        else:
+            warning = "Click Get Code first, Enter code from your email"
+            return render_template('register.html', title="Get Code", warning=warning)
+    else:
+        warning = "Click Get Code first, Enter code from your email"
+        return render_template('register.html', title="Get Code", warning=warning)
 
 
 # get empty new survey form, restricted for signed in users '/users/id/surveys/'
@@ -120,8 +122,9 @@ def add_new_survey():
             end_time = datetime.datetime.now() + datetime.timedelta(days=30)
             endTime = end_time.strftime("%Y-%m-%d %H:%M")
             survey_json['endTime'] = endTime
-            rev = api.create_survey(survey_json)
-            return redirect(url_for('get_survey_by_id', id=rev['id']))
+
+        rev = api.create_survey(survey_json)
+        return redirect(url_for('get_survey_by_id', id=rev['id']))
     return render_template('newSurveyForm.html', title='CREATE SURVEY')
 
 
@@ -199,7 +202,6 @@ def get_all_surveys_for_currentuser(id):
     print(surveys)
     return render_template('mysurveys.html', surveys=surveys)
 
-# TODO: publish survey, set end time ??
 # TODO: REPORTing PAGE
 
 
@@ -260,6 +262,7 @@ def save_answer_form(id):
     accept answer_a_survey page submission;
     '''
     answer_json = util.request_form_to_json(request)
+    survey = api.get_survey_by_id(id)
     answer_json['surveyLink'] = api.get_survey_by_id(id)['link']
     answer = util.parse_answer_json(answer_json)
     rev = api.create_answer(answer)
@@ -280,28 +283,30 @@ def click_MyReports():
 @app.route('/users/<uid>/reports')
 @login_required
 def get_my_report_list(uid):
-    # TODO: refine the report list to only show those matches
     surveys = api.get_all_surveys_for_user(uid)
     return render_template('my_report_list_page.html', uid=uid, title="ReportList", surveys=surveys)
 
 
-@app.route('/users/<uid>/report/surveys/<sid>')
+@app.route('/report/surveys/<sid>')
 @login_required
-def get_report(uid, sid):
+def get_report(sid):
+    uid = api.get_user_id(current_user.username)
     json = api.get_report_by_id(uid, sid)
+    if json is not None:
+        json = util.extract_report_json(json)
+        print(json)
+        return render_template("report_detail_for_each_survey.html", title="ReportDetail", survey=json)
     return "TBD"
 
 
-# #Upload Images ###
-
 @app.route("/surveys/<sid>/upload", methods=["POST"])
+@login_required
 def upload(sid):
     """Handle the upload of a file."""
     question_json = util.request_form_to_json(request)
     if question_json['question'] == '':
         return "Pls input quesiton"
     print("=== Form Data ===")
-    print(question_json)
 
     exact_path = os.path.join(os.getcwd(), "static/uploads")
     # try:
@@ -323,28 +328,12 @@ def upload(sid):
         return "No Image uploaded!"
     question_json['questionContent'] = ';'.join(images)
     rev_json = api.create_question(question_json)
+
     if rev_json is False:
         return "Add New Question Failed"
     survey = api.get_survey_by_id(int(sid))
     survey = util.extract_survey_json(survey)
     return render_template('surveydetail.html', title="Survey_Adding_Questions", survey=survey)
-
-
-# @app.route('/surveys/<sid>/questions', methods=['POST'])
-# @login_required
-# def send_new_question(sid):
-#     '''
-#     Get question data and send to backend db
-#     '''
-#     print(this_function_name)
-#     question_json = util.request_form_to_json(request)
-#     print(question_json)
-#     rev_json = api.create_question(question_json)
-#     if rev_json is False:
-#         return "Add New Question Failed"
-#     survey = api.get_survey_by_id(int(sid))
-#     survey = util.extract_survey_json(survey)
-#     return render_template('surveydetail.html', title="Survey_Adding_Questions", survey=survey)
 
 
 @app.route("/files/<uuid>/<sid>")

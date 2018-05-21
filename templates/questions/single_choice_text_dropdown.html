@@ -11,6 +11,15 @@
         <option value="{{ content['content'] }}"> {{ content['content'] }}</option>
       {% endfor %}
     </select>
+
+
+    {% for content in question['questionContent'] %}
+      {% if content['count'] is defined %}
+        <p> {{ content['content'] }} </p>
+        <div style="color:blue;"><strong> Count: {{ content['count'] }}</strong></div>
+      {% endif %}
+    {% endfor %}
+
   {% endif %}
 
 

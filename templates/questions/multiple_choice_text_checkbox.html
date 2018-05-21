@@ -10,8 +10,14 @@
                value="{{ content['content'] }}">
         <label class="form-check-label" for="checkbox101">{{ content['content'] }}</label>
       </div>
+
+      {% if content['count'] is defined %}
+        <div style="color:blue;"><strong> Count: {{ content['count'] }}</strong></div>
+      {% endif %}
+
     {% endfor %}
   {% endif %}
+
 
 
 </div>

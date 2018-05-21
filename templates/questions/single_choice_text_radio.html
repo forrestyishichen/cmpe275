@@ -12,6 +12,10 @@
                    value="{{ content['content'] }}" id="{{ question['id'] }}.answer">
             <label class="form-check-label" for="{{ question['id'] }}.answer">{{ content['content'] }}</label>
           </div>
+
+          {% if content['count'] is defined %}
+            <div style="color:blue;"><strong> Count: {{ content['count'] }}</strong></div>
+          {% endif %}
         {% endfor %}
       </p>
     {% endif %}

@@ -54,6 +54,42 @@ def extract_survey_json(survey):
     except Exception:
         return None
 
+
+def statis_to_json_list(statis, questionContent):
+    try:
+        options = []
+        stat = []
+        res = []
+        for count in statis.split(';'):
+            stat.append(count)
+        print(stat)
+        for choice in questionContent.split(';'):
+            options.append(choice)
+        print(options)
+        for i in range(len(options)):
+            res.append({'content': options[i], 'count': stat[i]})
+        print(res)
+        return res
+    except Exception:
+        print(ERROR_LOG + 'string list to json list failed')
+        return None
+
+
+def extract_report_json(survey):
+    # input: json format survey
+    try:
+        if survey['questions']:
+            for question in survey['questions']:
+                statis = question['statistic']
+                if question['questionContent']:
+                    content = question['questionContent']['questionContent']
+                    question['questionContent'] = statis_to_json_list(statis, content)
+            print(survey)
+            return survey
+    except Exception as e:
+        print(e)
+        return None
+
 # {'10.answerContent': 'yes', '20.answerContent': 'cookie', '21.answerContent.Japan': 'Japan',
 # '21.answerContent.Korea': 'Korea', '22.answerContent': 'female', '23.answerContent.engineer': 'engineer',
 # '23.answerContent.freelancer': 'freelancer', '8.answerContent': 'Anything you like.', 'action': 'save_answer',
