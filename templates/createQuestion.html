@@ -1,0 +1,65 @@
+{% include 'signed_in_home.html' %}
+
+{% block content %}
+  <div class="container">
+  {% if questionType == 'SINGLE_CHOICE_IMAGE_RADIO' or questionType == 'MULTIPLE_CHOICE_IMAGE_CHECKBOX' or questionType == 'SINGLE_CHOICE_IMAGE_CHECKBOX' %}
+  <form method="post" action="/surveys/{{ surveyId }}/upload" enctype = "multipart/form-data">
+  {% else %}
+  <form method="post" action="/surveys/{{ surveyId }}/questions" enctype = "multipart/form-data">
+  {% endif %}
+    <br>
+    <input type="hidden" name="surveyId" value="{{ surveyId }}"/>
+    <input type="hidden" name="questionType" value="{{ questionType }}"/>
+
+    <h4>New {{ questionType }} Type Question</h4>
+    <div class="form-group">
+      <label for="formInputTitle">Question Description: </label><br>
+      <input type="title" class="form-control" id="questionTitle" name="question" aria-describedby="title"
+             placeholder="Enter question">
+      <small id="titleHelp" class="form-text text-muted">Enter your question here.</small>
+    </div>
+
+
+
+    {% if questionType == 'YES_NO' %}
+      <input type="hidden" name="questionContent" value="yes;no"/>
+      <input type="submit" class="btn btn-primary" name="action" value="SAVE">
+
+    {% elif questionType == 'SHORT_ANSWER' or questionType == 'DATE_TIME' %}
+      <input type="submit" class="btn btn-primary" name="action" value="SAVE">
+    {% elif questionType == 'STAR_RATING' %}
+      <input type="submit" class="btn btn-primary" name="action" value="SAVE">
+
+    {% elif questionType == 'SINGLE_CHOICE_IMAGE_RADIO' or questionType == 'MULTIPLE_CHOICE_IMAGE_CHECKBOX' or questionType == 'SINGLE_CHOICE_IMAGE_CHECKBOX' %}
+
+      <div class="form-group">
+        <strong>Files:</strong><br>
+        Select files. Multiple files allowed.
+        <input id="file-picker" type="file" name="file" accept="image/*" multiple>
+        <p>
+        <fieldset id="progress" style="display: none">
+          <legend>Files Progress</legend>
+
+          <div class="progress-trough">
+            <div id="progress-bar" class="progress-bar">0%</div>
+          </div>
+        </fieldset>
+        <input type="submit" class="btn btn-primary" name="action" value="UPLOAD!">
+        <p>
+      </div>
+
+
+      {#      edit to differentiate text / image type#}
+    {% else %}
+      <div class="form-group">
+        <label for="formInputTitle">Add Options: </label><br>
+        <input type="title" class="form-control" id="questionTitle" name="questionContent" value=""
+               aria-describedby="title"
+               placeholder="Enter options">
+        <small id="titleHelp" class="form-text text-muted">Enter options for your question. Separate with ';'</small>
+      </div>
+      <input type="submit" class="btn btn-primary" name="action" value="SAVE">
+    {% endif %}
+  </form>
+  </div>
+{% endblock %}

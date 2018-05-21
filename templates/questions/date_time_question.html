@@ -1,0 +1,9 @@
+<div class="form-group">
+  <p><strong>{{ question['question'] }}</strong></p>
+  <div style="text-align:left">
+    <label for="dateTimeInput">Input DateTime: </label>
+    <input type="Text" id="dateTimeInput" name="{{ question['id'] }}.answerContent" maxlength="25" size="25"/>
+    <img src="../../static/images/cal.gif" onclick="javascript:NewCssCal ('dateTimeInput','yyyyMMdd','dropdown',true,'24')"
+         style="cursor:pointer"/>
+  </div>
+</div>

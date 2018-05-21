@@ -1,0 +1,24 @@
+{% include 'signed_in_home.html' %}
+{% block content %}
+<form method="post" action="/surveys/{{ surveyId }}/addquestion">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Question Type: </label>
+    <select class="form-control" id="exampleFormControlSelect1" name="questionType">
+      <option>MULTIPLE_CHOICE_TEXT_CHECKBOX</option>
+      <option>MULTIPLE_CHOICE_IMAGE_CHECKBOX</option>
+      <option>SINGLE_CHOICE_TEXT_RADIO</option>
+      <option>SINGLE_CHOICE_IMAGE_RADIO</option>
+      <option>SINGLE_CHOICE_TEXT_DROPDOWN</option>
+      <option>SINGLE_CHOICE_TEXT_CHECKBOX</option>
+      <option>SINGLE_CHOICE_IMAGE_CHECKBOX</option>
+      <option>YES_NO</option>
+      <option>SHORT_ANSWER</option>
+      <option>DATE_TIME</option>
+      <option>STAR_RATING</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary" name="action" value="new-question">ADD</button>
+</form>
+{% endblock %}
+
+{% include 'footer.html' %}

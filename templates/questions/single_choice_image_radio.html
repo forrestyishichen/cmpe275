@@ -1,0 +1,26 @@
+<div class="single-choice-image-radio">
+  <div class="form-group">
+    <p><strong>{{ question['question'] }}</strong></p>
+
+    {% if question['questionContent'] is none %}
+
+    {% else %}
+      <p>
+        {% for content in question['questionContent'] %}
+          {#      <li class="list-group-item">{{ content['content'] }}</li>#}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="{{ question['id'] }}.answerContent"
+                   value="{{ content['content'] }}" id="{{ question['id'] }}.answer">
+            <label class="form-check-label" for="{{ question['id'] }}.answer">
+              <img class="img-thumbnail img-fluid" style="width:auto; max-height: 300px;" src= {{ "../../" + content['content'] }}/>
+            </label>
+          </div>
+        {% endfor %}
+      </p>
+    {% endif %}
+
+
+  </div>
+</div>
+
+

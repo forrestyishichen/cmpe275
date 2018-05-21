@@ -1,0 +1,19 @@
+<div class="form-group">
+  <p><strong>{{ question['question'] }}</strong></p>
+
+  {% if question['questionContent'] is none %}
+
+  {% else %}
+    {% for content in question['questionContent'] %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="checkbox101" name="{{question['id']}}.answerContent.{{ content['content'] }}"
+               value="{{ content['content'] }}">
+        <label class="form-check-label" for="checkbox101">{{ content['content'] }}</label>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+
+</div>
+
+

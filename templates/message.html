@@ -1,0 +1,11 @@
+{% block errormessage %}
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+            {% for message in messages %}
+              <p style="color: darkred;">{{ message }}</p>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+{% endblock %}

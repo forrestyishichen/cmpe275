@@ -1,0 +1,23 @@
+<div class="single-choice-text-radio">
+  <div class="form-group">
+    <p><strong>{{ question['question'] }}</strong></p>
+
+    {% if question['questionContent'] is none %}
+
+    {% else %}
+      <p>
+        {% for content in question['questionContent'] %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="{{ question['id'] }}.answerContent"
+                   value="{{ content['content'] }}" id="{{ question['id'] }}.answer">
+            <label class="form-check-label" for="{{ question['id'] }}.answer">{{ content['content'] }}</label>
+          </div>
+        {% endfor %}
+      </p>
+    {% endif %}
+
+
+  </div>
+</div>
+
+

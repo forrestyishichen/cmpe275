@@ -1,0 +1,24 @@
+
+
+img.ribbon {
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      border: 0;
+      cursor: pointer; }
+
+
+.starrr a {
+    font-size: 30px;
+    padding: 0 1px;
+    cursor: pointer;
+    color: #FFD119;
+    text-decoration: none;
+}
+
+
+element.style {
+    text-align: left;
+    margin: 150px auto 100px auto;
+}

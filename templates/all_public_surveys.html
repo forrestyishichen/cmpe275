@@ -1,0 +1,26 @@
+{% if isSignedIn %}
+{% include 'signed_in_home.html' %}
+{% else  %}
+{% include 'base.html' %}
+{% endif %}
+
+
+{% block surveyList %}
+  <div class="container">
+    <h4>All Public Surveys</h4>
+    <h5>Please choose a survey to answer.</h5>
+    <ul class="list-group">
+    {% for survey in surveys %}
+      <li class="list-group-item">
+      <a href="/surveys/{{ survey['id'] }}/answer" class="list-group-item list-group-item-action">
+        <p>Survey #{{ survey['id'] }}</p>
+        <p>Created By: {{ survey['account']['email'] }}</p>
+        <p>Survey Type: {{ survey['surveyType'] }}</p>
+        <p>Start Time: {{ survey['startTime'] }}</p>
+        <p>End Time: {{ survey['endTime'] }}</p>
+      </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% include 'signed_in_home.html' %}
+
+{% block newSurvey %}
+  <div class="container">
+  <form method="post" action="/surveys/">
+    <div class="form-group">
+      <label for="formInputTitle">Title</label>
+      <input type="title" class="form-control" id="formInputTitle" name="title" aria-describedby="title"
+             placeholder="Enter title">
+      <small id="titleHelp" class="form-text text-muted">Create a title for your survey.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="surveyType">Survey Type: </label><br>
+      <div class="form-check form-check-inline" id="surveyTypeRadios">
+        <input class="form-check-input" type="radio" name="surveyType" id="inlineRadio1" value="GENERAL">
+        <label class="form-check-label" for="inlineRadio1">General</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="surveyType" id="inlineRadio2" value="CLOSED_INVITATION">
+        <label class="form-check-label" for="inlineRadio2">Close Invitation</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="surveyType" id="inlineRadio2" value="OPEN_UNIQUE">
+        <label class="form-check-label" for="inlineRadio2">Open Unique</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <div style="text-align:left">
+      <label for="startTimeInput">Start Time: </label>
+      <input type="Text" id="startTimeInput" name="startTime" maxlength="25" size="25"/>
+      <img src="/static/images/cal.gif"
+           onclick="javascript:NewCssCal ('startTimeInput','yyyyMMdd','dropdown',true,'24')" style="cursor:pointer"/>
+      <small>Default set to current time.</small>
+    </div>
+
+    <div style="text-align:left">
+      <label for="endTimeInput">End  Time: </label>
+      <input type="Text" id="endTimeInput" name="endTime" maxlength="25" size="25"/>
+      <img src="/static/images/cal.gif" onclick="javascript:NewCssCal ('endTimeInput','yyyyMMdd','dropdown',true,'24')"
+           style="cursor:pointer"/>
+      <small>Default set to 30 days from now.</small>
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary" name="action" value="new-survey">SAVE</button>
+  </form>
+</div>
+
+{% endblock %}
+{% include 'footer.html' %}

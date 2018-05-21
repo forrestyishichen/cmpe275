@@ -1,0 +1,20 @@
+{% include 'signed_in_home.html' %}
+{% block surveyList %}
+  <div class="container">
+    <h4>All Published Surveys.</h4>
+    <h5>Click To See Details.</h5>
+    <ul class="list-group">
+    {% for survey in surveys %}
+      <li class="list-group-item">
+      <a href="/users/{{ uid }}/report/surveys/{{ survey['id'] }}" class="list-group-item list-group-item-action">
+        <p>Survey #{{ survey['id'] }}</p>
+        <p>Created By: {{ survey['account']['email'] }}</p>
+        <p>Survey Type: {{ survey['surveyType'] }}</p>
+        <p>Start Time: {{ survey['startTime'] }}</p>
+        <p>End Time: {{ survey['endTime'] }}</p>
+      </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

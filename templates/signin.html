@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block signin %}
+  <section class="container">
+    <div class="container">
+      <form method="post" action="{{ url_for('login') }}">
+        <div class="form-group row">
+        <label>Email </label>
+        <input type="text" class="form-control" name="username" value="" placeholder="Username or Email">
+        <label>Password </label>
+        <input type="password" class="form-control" name="password" value="" placeholder="Password">
+          </div>
+        <div class="form-group">
+        <p class="submit"><input type="submit" class="btn btn-primary" name="action" value="login"></p>
+        </div>
+{#        <p class="submit"><input type="submit" name="action" value="register"></p>#}
+        {#        {{ form.hidden_tag() }}#}
+      </form>
+    </div>
+  </section>
+{% endblock %}
+
+{% include 'message.html' %}
+
+{#{% extends "layout.html" %}#}
+{#<html>#}
+{#    <head>#}
+{#        <title>Login Page</title>#}
+{#    </head>#}
+{#    <body>#}
+{#        <form action="{{ url_for("login") }}" method="POST">#}
+{#        <p>#}
+{#            User Name:<br>#}
+{#            <input type="text" name="username" /><br>#}
+{#        </p>#}
+{#        <p>#}
+{#            Password:</br>#}
+{#            <input type="password" name="password" /><br>#}
+{#        </p>#}
+{#        <p>#}
+{#            <input type="checkbox" name="remember_me"/>Remember Me#}
+{#        </p>#}
+{#        </form>#}
+{#    </body>#}
+{#</html>#}

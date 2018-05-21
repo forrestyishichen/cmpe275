@@ -1,0 +1,106 @@
+{% include 'signed_in_home.html' %}
+{% block survey_head %}
+  <script>
+    function addRow() {
+      var div = document.createElement('div');
+      div.className = 'row';
+
+      div.innerHTML =
+          '<input type="text" name="name" value="" />\
+          <input type="text" name="value" value="" />\
+          <label> <input type="checkbox" name="check" value="1" /> Checked? </label>\
+          <input type="button" value="Remove" onclick="removeRow(this)">';
+
+      document.getElementById('questions-content').appendChild(div);
+    }
+
+    function removeRow(input) {
+      document.getElementById('questions-content').removeChild(input.parentNode);
+    }
+  </script>
+
+  <div class="container">
+    <hr>
+  <div class="head">
+    <h3>{{ survey['surveyType'] }} Survey #{{ survey['id'] }}</h3>
+    <p><strong>Created By: {{ survey['account']['email'] }}</strong></p>
+    <p>Start Time: {{ survey['startTime'] }}</p>
+    <p>End Time: {{ survey['endTime'] }}</p>
+    <hr>
+  </div>
+  </div>
+{% endblock %}
+
+
+{% block Questions %}
+  <div class="container">
+    <form>
+      <div class="form-group">
+        <label for="email" class="col-form-label">Email: </label><br>
+        <input type="title" class="form-control col-md-8" id="email" name="username" placeholder="Enter email">
+      </div>
+
+      {% for question in survey['questions'] %}
+
+        {% if question['questionType'] == 'YES_NO' %}
+          {% include 'questions/yes_no_question.html' %}
+
+        {% elif question['questionType'] == 'SHORT_ANSWER' %}
+          {% include 'questions/short_answer_question.html' %}
+
+        {% elif question['questionType'] == 'DATE_TIME' %}
+          {% include 'questions/date_time_question.html' %}
+
+        {% elif question['questionType'] == 'STAR_RATING' %}
+          {% include 'questions/star_rating_question.html' %}
+
+        {% elif question['questionType'] == 'SINGLE_CHOICE_TEXT_RADIO' %}
+          {% include 'questions/single_choice_text_radio.html' %}
+
+        {% elif question['questionType'] == 'SINGLE_CHOICE_TEXT_CHECKBOX' %}
+          {% include 'questions/single_choice_text_checkbox.html' %}
+
+        {% elif question['questionType'] == 'SINGLE_CHOICE_TEXT_DROPDOWN' %}
+          {% include 'questions/single_choice_text_dropdown.html' %}
+
+        {% elif question['questionType'] == 'MULTIPLE_CHOICE_TEXT_CHECKBOX' %}
+          {% include 'questions/multiple_choice_text_checkbox.html' %}
+
+        {% elif question['questionType'] == 'SINGLE_CHOICE_IMAGE_RADIO' %}
+          {% include 'questions/single_choice_image_radio.html' %}
+
+        {% elif question['questionType'] == 'SINGLE_CHOICE_IMAGE_CHECKBOX' %}
+          {% include 'questions/single_choice_image_checkbox.html' %}
+
+        {% elif question['questionType'] == 'MULTIPLE_CHOICE_IMAGE_CHECKBOX' %}
+          {% include 'questions/multiple_choice_image_checkbox.html' %}
+
+        {% endif %}
+      {% endfor %}
+
+    </form>
+  </div>
+{% endblock %}
+
+{% block actions %}
+  <div class="container">
+    <div class="questions-content" id="questions-content">
+      <button type="button" class="btn btn-primary"
+              onclick="window.location.href='/surveys/{{ survey['id'] }}/addquestion'">Add Question
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <form method="post" action="/surveys/{{ survey['id'] }}/invitations">
+      <div class="form-group">
+        <h3>Invite Friends Through Emails : </h3>
+        <input type="title" class="form-control" id="invitations" name="emails" aria-describedby="invitations"
+               placeholder="Input Emails">
+        <small id="titleHelp" class="form-text text-muted">Input Emails, separated by ","</small>
+        <input class="btn btn-primary" type="submit" value="Send Invitation">
+      </div>
+    </form>
+  </div>
+
+{% endblock %}
